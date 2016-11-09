@@ -12,50 +12,26 @@ public class T1051 {
 			int N = in.nextInt();
 			int M = in.nextInt();
 			
-			int[] arr = new int[N];
+			int[] arr = new int[N + 2];
+			arr[0] = 0;
+			arr[N] = 100;
 			for(int i = 0; i < N; i++) {
-				arr[i] = in.nextInt();
+				arr[i+1] = in.nextInt();
 			}
 			
-			int[] aInt = new int[arr.length + 1];
-			aInt[0] = arr[0] - 1;
-			for (int i = 1; i < arr.length; i++) {
-				aInt[i] = arr[i] - arr[i-1] - 1;
-			}
-			aInt[arr.length] = 100 - arr[arr.length - 1];
-			
-			System.out.println(getMaxConsist(aInt, M));
+			System.out.println(getMaxConsist(arr, M));
 		}
 		in.close();
 	}
 	
 	public static int getMaxConsist(int[] arr, int num) {
 		if (num >= arr.length - 1) return 100;
-		
 		int max = 0;
-		while(num-- > 0) {
-			max = 0;
-			int loc = 0;
-			for(int i = 0; i < arr.length - 1; i++) {
-				if (max < arr[i] + arr[i+1]) {
-					loc = i;
-					max = arr[i] + arr[i+1];
-				}
-			}
-			int[] tempArr = new int[arr.length - 1];
-			for(int i = 0; i < arr.length - 1; i++) {
-				if (i < loc) {
-					tempArr[i] = arr[i];
-				} else if (i == loc) {
-					tempArr[i] = arr[i] + arr[i+1] + 1;
-				} else {
-					tempArr[i] = arr[i+1];
-				}
-			}
-			arr = tempArr;
+		for(int i = 0; i < arr.length - num - 1; i++) {
+			int tmpMax = arr[i+num+1] - arr[i] -1;
+			max = max > tmpMax ? max : tmpMax;
 		}
-		
-		return max + 1;
+		return max;
 	}
 
 }
